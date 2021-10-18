@@ -61,7 +61,7 @@ namespace MathForGames
 
             Scene openingScene = new Scene();
             Player player = new Player('@', 10, 10, 150, Color.RED, "Player");
-            Actor actor = new Actor('E', 5, 5, Color.BLUE, "Actor");
+            Enemy actor = new Enemy('E', 200, 200, 100, Color.BLUE, player, "Enemy");
 
             AddScene(openingScene);
             openingScene.AddActor(player);
