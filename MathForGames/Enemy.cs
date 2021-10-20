@@ -10,7 +10,9 @@ namespace MathForGames
     {
         private float _speed;
         private Vector2 _velocity;
-        private Player _player;
+        private Actor _target;
+        private Vector2 _forward = new Vector2(1, 0);
+        private Vector2 fieldOfView = new Vector2(100, 50);
 
         public float Speed
         {
@@ -24,10 +26,16 @@ namespace MathForGames
             set { _velocity = value; }
         }
 
-        public Enemy(char icon, float x, float y, float speed, Color color, Player player, string name = "Enemy")
+        public Vector2 Forward
+        {
+            get { return _forward; }
+            set { _forward = value; }
+        }
+
+        public Enemy(char icon, float x, float y, float speed, Color color, Actor target, string name = "Enemy")
             : base(icon, x, y, color, name)
         {
-            _player = player;
+            _target = target;
             _speed = speed;
         }
 
@@ -36,11 +44,25 @@ namespace MathForGames
             base.Update(deltaTime);
 
             // Create a vector that stores the move input.
-            Vector2 moveDirection = _player.Position - Position;
+            Vector2 moveDirection = _target.Position - Position;
 
             Velocity = moveDirection.Normalized * Speed * deltaTime;
 
-            Position += Velocity;
+            if(GetTargetInSight() && moveDirection <= fieldOfView)
+                Position += Velocity;
+        }
+
+        public bool GetTargetInSight()
+        {
+            Vector2 directionOfTarget = (_target.Position - Position).Normalized;
+            Vector2 moveDirection = _target.Position - Position;
+
+            if (moveDirection.X > 150 || moveDirection.Y > 100)
+                return false;
+            else if (moveDirection.X < -150 || moveDirection.Y < -100)
+                return false;
+
+            return Vector2.DotProduct(directionOfTarget, Forward) > 0;
         }
     }
 }
