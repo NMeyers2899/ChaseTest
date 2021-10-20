@@ -61,7 +61,12 @@ namespace MathForGames
 
             Scene openingScene = new Scene();
             Player player = new Player('@', 10, 10, 150, Color.RED, "Player");
-            Enemy actor = new Enemy('E', 200, 200, 100, Color.BLUE, player, "Enemy");
+            player.CollisionRadius = 20;
+            Enemy actor = new Enemy('E', 200, 200, 100, 100, 1, Color.BLUE, player, "Enemy");
+            actor.CollisionRadius = 20;
+            UIText text = new UIText(250, 250, "TestTextBox", Color.BLACK, 100, 100, 15, "You do not recognize the bodies in the water.");
+
+            openingScene.AddUIElement(text);
 
             AddScene(openingScene);
             openingScene.AddActor(player);

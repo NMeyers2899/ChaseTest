@@ -18,6 +18,7 @@ namespace MathForGames
         private string _name;
         private Vector2 _position;
         private bool _started;
+        private float _collisionRadius;
 
         /// <summary>
         /// True if the start function has been called for this actor.
@@ -41,6 +42,12 @@ namespace MathForGames
         public string Name
         {
             get { return _name; }
+        }
+
+        public float CollisionRadius
+        {
+            get { return _collisionRadius; }
+            set { _collisionRadius = value; }
         }
 
         public Actor(char icon, Vector2 position, Color color, string name = "Actor")
@@ -76,6 +83,19 @@ namespace MathForGames
         public virtual void OnCollision(Actor actor)
         {
 
+        }
+
+        /// <summary>
+        /// Checks if this actor has collided with another actor.
+        /// </summary>
+        /// <param name="other"> The actor being collided with. </param>
+        /// <returns> Whether or not the distance between the two is less than the combined radii. </returns>
+        public virtual bool CheckForCollision(Actor other)
+        {
+            float combinedRadii = other.CollisionRadius + CollisionRadius;
+            float distance = Vector2.Distance(Position, other.Position);
+
+            return distance <= combinedRadii;
         }
     }
 }
